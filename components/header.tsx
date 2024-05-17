@@ -3,7 +3,7 @@ import HeaderLogo from "./header-logo";
 import Navigation from "./navigation";
 import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
 import { UpdateIcon } from "@radix-ui/react-icons";
-import WelcomeMsg from "./welecome-msg";
+import WelcomeMsg from "./welcome";
 
 const Header = () => {
   return (
