@@ -15,6 +15,13 @@
       "when": 1716210782221,
       "tag": "0001_good_vengeance",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1716216728647,
+      "tag": "0002_brief_next_avengers",
+      "breakpoints": true
     }
   ]
 }
