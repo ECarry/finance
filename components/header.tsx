@@ -1,9 +1,9 @@
-import React from "react";
+import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
+
 import HeaderLogo from "./header-logo";
 import Navigation from "./navigation";
-import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
-import { UpdateIcon } from "@radix-ui/react-icons";
 import WelcomeMsg from "./welcome";
+import { Loader2 } from "lucide-react";
 
 const Header = () => {
   return (
@@ -18,7 +18,7 @@ const Header = () => {
             <UserButton afterSignOutUrl="/" />
           </ClerkLoaded>
           <ClerkLoading>
-            <UpdateIcon className="animate-spin text-slate-400 size-4" />
+            <Loader2 className="animate-spin text-slate-400 size-4" />
           </ClerkLoading>
         </div>
         <WelcomeMsg />

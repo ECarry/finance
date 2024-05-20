@@ -1,8 +1,8 @@
 "use client";
 
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete";
-import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
+import { useBulkDeleteCategories } from "@/features/categories/api/use-bulk-delete";
+import { useNewCategory } from "@/features/categories/hooks/use-new-category";
+import { useGetCategories } from "@/features/categories/api/use-get-categories";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,16 +12,16 @@ import { DataTable } from "@/components/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
 
-const AccountsPage = () => {
-  const newAccount = useNewAccount();
-  const accountsQuery = useGetAccounts();
-  const deleteAccounts = useBulkDeleteAccounts();
+const CategoriesPage = () => {
+  const newCategory = useNewCategory();
+  const categoriesQuery = useGetCategories();
+  const deleteAccounts = useBulkDeleteCategories();
 
-  const accounts = accountsQuery.data || [];
+  const accounts = categoriesQuery.data || [];
 
-  const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
+  const isDisabled = categoriesQuery.isLoading || deleteAccounts.isPending;
 
-  if (accountsQuery.isLoading) {
+  if (categoriesQuery.isLoading) {
     return (
       <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24">
         <Card className="border-none drop-shadow-sm">
@@ -42,8 +42,8 @@ const AccountsPage = () => {
     <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24">
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
-          <CardTitle className="text-xl line-clamp-1">Accounts</CardTitle>
-          <Button onClick={newAccount.onOpen} size="sm">
+          <CardTitle className="text-xl line-clamp-1">Categories</CardTitle>
+          <Button onClick={newCategory.onOpen} size="sm">
             <PlusIcon className="size-4 mr-2" />
             Add new
           </Button>
@@ -65,4 +65,4 @@ const AccountsPage = () => {
   );
 };
 
-export default AccountsPage;
+export default CategoriesPage;
