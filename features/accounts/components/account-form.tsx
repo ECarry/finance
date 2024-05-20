@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { Trash } from "lucide-react";
 
 const FormSchema = insertAccountSchema.pick({
   name: true,
@@ -81,8 +81,9 @@ export const AccountForm = ({
             variant="outline"
             type="button"
             onClick={handleDelete}
+            disabled={disabled}
           >
-            <TrashIcon className="size-4 mr-2" />
+            <Trash className="size-4 mr-2" />
             Delete account
           </Button>
         )}

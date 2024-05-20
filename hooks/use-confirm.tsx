@@ -28,12 +28,12 @@ export const useConfirm = (
   };
 
   const handleConfirm = () => {
-    promise?.resolve(false);
+    promise?.resolve(true);
     handleClose();
   };
 
   const handleCancel = () => {
-    promise?.resolve(true);
+    promise?.resolve(false);
     handleClose();
   };
 
