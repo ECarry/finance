@@ -1,7 +1,8 @@
 "use client";
 
-import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
-import { useDeleteCategory } from "@/features/categories/api/use-delete-category";
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transaction";
+import { useDeleteTransaction } from "@/features/transactions/api/use-delete-transaction";
+import { useConfirm } from "@/hooks/use-confirm";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,16 +15,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useConfirm } from "@/hooks/use-confirm";
 
 const Actions = ({ id }: { id: string }) => {
-  const { onOpen } = useOpenCategory();
+  const { onOpen } = useOpenTransaction();
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "This will permanently delete the category and all associated transactions."
+    "This will permanently delete the all associated transactions."
   );
 
-  const deleteMutation = useDeleteCategory(id);
+  const deleteMutation = useDeleteTransaction(id);
 
   const onDelete = async () => {
     const ok = await confirm();

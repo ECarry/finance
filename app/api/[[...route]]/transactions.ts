@@ -131,6 +131,31 @@ const app = new Hono()
     }
   )
   .post(
+    "/bulk-create",
+    clerkMiddleware(),
+    zValidator("json", z.array(insertTransactionSchema.omit({ id: true }))),
+    async (c) => {
+      const auth = getAuth(c);
+      const values = c.req.valid("json");
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const data = await db
+        .insert(transactions)
+        .values(
+          values.map((value) => ({
+            id: createId(),
+            ...value,
+          }))
+        )
+        .returning();
+
+      return c.json({ data });
+    }
+  )
+  .post(
     "/bulk-delete",
     clerkMiddleware(),
     zValidator(
@@ -164,7 +189,10 @@ const app = new Hono()
         .with(transactionsToDelete)
         .delete(transactions)
         .where(
-          inArray(transactions.id, sql`select id from ${transactionsToDelete}`)
+          inArray(
+            transactions.id,
+            sql`(select id from ${transactionsToDelete})`
+          )
         )
         .returning({
           id: transactions.id,
@@ -253,7 +281,10 @@ const app = new Hono()
         .with(transactionsToDelete)
         .delete(transactions)
         .where(
-          inArray(transactions.id, sql`select id from ${transactionsToDelete}`)
+          inArray(
+            transactions.id,
+            sql`(select id from ${transactionsToDelete})`
+          )
         )
         .returning({
           id: categories.id,

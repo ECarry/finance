@@ -60,6 +60,3 @@ const Actions = ({ id }: { id: string }) => {
 };
 
 export default Actions;
-function useDeleteAccountMutation() {
-  throw new Error("Function not implemented.");
-}
