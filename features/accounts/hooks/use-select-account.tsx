@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useGetAccounts } from "../api/use-get-accounts";
 import { useCreateAccount } from "../api/use-create-account";
 
@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Select from "@/components/select";
 
 export const useSelectAccount = (): [
   () => JSX.Element,
@@ -25,8 +26,9 @@ export const useSelectAccount = (): [
   }));
 
   const [promise, setPromise] = useState<{
-    resolve: (value: boolean) => void;
+    resolve: (value: string | undefined) => void;
   } | null>(null);
+  const selectValue = useRef<string>();
 
   const confirm = () =>
     new Promise((resolve, reject) => {
@@ -38,22 +40,31 @@ export const useSelectAccount = (): [
   };
 
   const handleConfirm = () => {
-    promise?.resolve(true);
+    promise?.resolve(selectValue.current);
     handleClose();
   };
 
   const handleCancel = () => {
-    promise?.resolve(false);
+    promise?.resolve(undefined);
     handleClose();
   };
 
-  const ConfirmDialog = () => (
+  const AccountDialog = () => (
     <Dialog open={promise !== null} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>title</DialogTitle>
-          <DialogDescription>message</DialogDescription>
+          <DialogTitle>Select Account</DialogTitle>
+          <DialogDescription>
+            Please select an account to use for this transaction.
+          </DialogDescription>
         </DialogHeader>
+        <Select
+          placeholder="Select an account"
+          options={accountOptions}
+          onCreate={onCreateAccount}
+          onChange={(value) => (selectValue.current = value)}
+          disabled={accountsQuery.isLoading || accountMutation.isPending}
+        />
         <DialogFooter>
           <Button onClick={handleCancel} variant="outline">
             Cancel
@@ -64,5 +75,5 @@ export const useSelectAccount = (): [
     </Dialog>
   );
 
-  return [ConfirmDialog, confirm];
+  return [AccountDialog, confirm];
 };

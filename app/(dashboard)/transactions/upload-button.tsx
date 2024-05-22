@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { UploadIcon } from "lucide-react";
+import { skip } from "node:test";
 import { useCSVReader } from "react-papaparse";
 
 type Props = {
@@ -10,7 +11,12 @@ const UploadButton = ({ onUpload }: Props) => {
   const { CSVReader } = useCSVReader();
 
   return (
-    <CSVReader onUploadAccepted={onUpload}>
+    <CSVReader
+      onUploadAccepted={onUpload}
+      config={{
+        skipEmptyLines: true,
+      }}
+    >
       {({ getRootProps }: any) => (
         <Button
           type="button"
