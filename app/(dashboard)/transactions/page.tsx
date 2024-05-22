@@ -1,5 +1,6 @@
 "use client";
 
+import { transactions as transactionsSchema } from "@/db/schema";
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete";
 import { useNewTransaction } from "@/features/transactions/hooks/use-new-transaction";
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
@@ -32,9 +33,6 @@ const TransactionsPage = () => {
   const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
     setImportResults(results);
     setVariant(VARIANTS.IMPORT);
-    console.log("---------------------------");
-    console.log(results);
-    console.log("---------------------------");
   };
 
   const onCancelImport = () => {
@@ -50,6 +48,10 @@ const TransactionsPage = () => {
 
   const isDisabled =
     transactionsQuery.isLoading || deleteTransactions.isPending;
+
+  const onSubmitImport = (values: typeof transactionsSchema.$inferInsert) => {
+    console.log(values);
+  };
 
   if (transactionsQuery.isLoading) {
     return (
@@ -74,7 +76,7 @@ const TransactionsPage = () => {
         <ImportCard
           data={importResults.data}
           onCancel={onCancelImport}
-          onSubmit={() => {}}
+          onSubmit={onSubmitImport}
         />
       </>
     );
