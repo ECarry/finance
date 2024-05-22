@@ -3,12 +3,11 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import TableHeadSelect from "./table-head-seletc";
+import TableHeadSelect from "./table-head-select";
 
 type ImportTableProps = {
   headers: string[];

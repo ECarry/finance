@@ -11,12 +11,7 @@ const UploadButton = ({ onUpload }: Props) => {
 
   return (
     <CSVReader onUploadAccepted={onUpload}>
-      {({
-        getRootProps,
-        acceptedFile,
-        ProgressBar,
-        getRemoveFileProps,
-      }: any) => (
+      {({ getRootProps }: any) => (
         <Button
           type="button"
           size="sm"
