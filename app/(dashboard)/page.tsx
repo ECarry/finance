@@ -1,15 +1,11 @@
-"use client";
+import DataCharts from "@/components/data-charts";
+import DataGrid from "@/components/data-grid";
 
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
-
-export default function Home() {
-  const { data: accounts, isLoading } = useGetAccounts();
-
+export default function Dashboard() {
   return (
-    <div>
-      {accounts?.map((account) => (
-        <div key={account.id}>{account.name}</div>
-      ))}
+    <div className="max-w-7xl mx-auto w-full pb-10 -mt-24">
+      <DataGrid />
+      <DataCharts />
     </div>
   );
 }

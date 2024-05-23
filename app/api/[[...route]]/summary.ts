@@ -4,7 +4,7 @@ import { calculatePercentageChange, fillMissingDate } from "@/lib/utils";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import { subDays, parse, differenceInDays } from "date-fns";
-import { and, eq, gte, lt, lte, sql } from "drizzle-orm";
+import { and, desc, eq, gte, lt, lte, sql, sum } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -55,13 +55,13 @@ const app = new Hono().get(
             sql`(SUM(CASE WHEN ${transactions.amount} < 0 THEN ${transactions.amount} ELSE 0 END))`.mapWith(
               Number
             ),
-          remaining: sql`(SUM(${transactions.amount}))`.mapWith(Number),
+          remaining: sum(transactions.amount).mapWith(Number),
         })
         .from(transactions)
         .innerJoin(accounts, eq(transactions.accountId, accounts.id))
         .where(
           and(
-            accountId ? eq(accounts.id, accountId) : undefined,
+            accountId ? eq(transactions.id, accountId) : undefined,
             eq(accounts.userId, userId),
             gte(transactions.date, startDate),
             lte(transactions.date, endDate)
@@ -112,13 +112,14 @@ const app = new Hono().get(
         )
       )
       .groupBy(categories.name)
-      .orderBy(sql`SUM(ABS(${transactions.amount}))`);
+      .orderBy(desc(sql`SUM(ABS(${transactions.amount}))`));
 
     const topCategories = category.slice(0, 3);
-
     const otherCategories = category.slice(3);
     const otherSum = otherCategories.reduce((sum, cur) => sum + cur.value, 0);
+
     const finalCategories = topCategories;
+
     if (otherCategories.length > 0) {
       finalCategories.push({ name: "Other", value: otherSum });
     }
@@ -131,7 +132,7 @@ const app = new Hono().get(
             Number
           ),
         expenses:
-          sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ${transactions.amount} ELSE 0 END)`.mapWith(
+          sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ABS(${transactions.amount}) ELSE 0 END)`.mapWith(
             Number
           ),
       })
